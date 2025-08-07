@@ -63,7 +63,22 @@ describe("When the user attempts to create a new payment", () => {
 
     expect(result.statusCode).toBe(422);
     expect(JSON.parse(result.body)).toEqual({
-      message: "Unsupported currency code 'ZZZ'",
+      message: "Could not find currency code 'ZZZ'",
+    });
+  });
+  it("Fails with 422 if the amount given is not an integer", async () => {
+    const body = {
+      currency: "AUD",
+      amount: 99.99,
+    };
+
+    const result = await handler({
+      body: JSON.stringify(body),
+    } as unknown as APIGatewayProxyEvent);
+
+    expect(result.statusCode).toBe(422);
+    expect(JSON.parse(result.body)).toEqual({
+      message: "Invalid amount recieved '99.99' should be an integer",
     });
   });
 });

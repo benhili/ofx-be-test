@@ -13,7 +13,12 @@ export const handler = async (
 
   if (!Object.values(CountryCurrencyCode).includes(currency)) {
     return buildResponse(422, {
-      message: `Unsupported currency code '${currency}'`,
+      message: `Could not find currency code '${currency}'`,
+    });
+  }
+  if (!Number.isInteger(amount)) {
+    return buildResponse(422, {
+      message: `Invalid amount recieved '${amount}' should be an integer`,
     });
   }
 
