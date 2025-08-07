@@ -1,3 +1,10 @@
+# Demo
+
+
+https://github.com/user-attachments/assets/94e330d0-5ad7-4690-995f-be28b3406bae
+
+
+
 # OFX Backend Coding Test
 The OFX platform allows users to make and manage payments anywhere in the world. Some of the OFX clients use this capability as a baseline to build bespoke products in their respective places via our API.
   
@@ -31,4 +38,5 @@ The `listPayments` endpoint allows callers to get a list of all payments they've
   
 Update the API so that users can fetch a list of payments by currency.
   
+
 **Hint**: DynamoDB allows you to add `FilterExpressions` to your queries in order to narrow down your search results. You can find out more about those expressions in the DynamoDB documentation.
