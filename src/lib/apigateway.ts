@@ -11,7 +11,7 @@ export const buildResponse = (statusCode: number, body: Object): APIGatewayProxy
     };
 };
 
-export const parseInput = (body: string): Object => {
+export const parseInput = (body: string) => {
     try {
         return JSON.parse(body);
     } catch (err) {
