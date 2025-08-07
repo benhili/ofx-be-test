@@ -13,7 +13,7 @@ export const handler = async (
 
   const payment = await getPayment(paymentId);
   if (!payment) {
-    return buildResponse(422, {
+    return buildResponse(404, {
       message: `No payment found for payment ID ${paymentId}`,
     });
   }

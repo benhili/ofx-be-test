@@ -48,7 +48,7 @@ describe("When the user requests the records for a specific payment", () => {
       },
     } as unknown as APIGatewayProxyEvent);
 
-    expect(result.statusCode).toBe(422);
+    expect(result.statusCode).toBe(404);
     expect(JSON.parse(result.body)).toEqual({
       message: `No payment found for payment ID ${paymentId}`,
     });
