@@ -23,7 +23,7 @@ describe("When the user attempts to create a new payment", () => {
       expect.objectContaining({ ...body })
     );
   });
-  it("Informs the user if the body is missing amount", async () => {
+  it("Fails with 400 if the body is missing the amount field", async () => {
     const bodyWithoutAmount = {
       currency: "AUD",
     };
@@ -37,7 +37,7 @@ describe("When the user attempts to create a new payment", () => {
       message: "Missing amount or currency",
     });
   });
-  it("Informs the user if the body is missing currency", async () => {
+  it("Fails with 400 if the body is missing the currency field", async () => {
     const bodyWithoutCurrency = {
       amount: 9999,
     };
@@ -49,6 +49,21 @@ describe("When the user attempts to create a new payment", () => {
     expect(result.statusCode).toBe(400);
     expect(JSON.parse(result.body)).toEqual({
       message: "Missing amount or currency",
+    });
+  });
+  it("Fails with 422 if the currency code is not found", async () => {
+    const body = {
+      currency: "ZZZ",
+      amount: 9999,
+    };
+
+    const result = await handler({
+      body: JSON.stringify(body),
+    } as unknown as APIGatewayProxyEvent);
+
+    expect(result.statusCode).toBe(422);
+    expect(JSON.parse(result.body)).toEqual({
+      message: "Unsupported currency code 'ZZZ'",
     });
   });
 });

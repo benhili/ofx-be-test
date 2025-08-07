@@ -31,8 +31,15 @@ export const createPayment = async (payment: Payment) => {
     );
 };
 
+// TODO: there's probably a library for this or you could just
+// copy paste the whole currency code list, this is just a stub
+export enum CountryCurrencyCode {
+  "AUD",
+  "SGD",
+}
+
 export type Payment = {
-    id: string;
-    amount: number;
-    currency: string;
+  id: string;
+  amount: number;
+  currency: CountryCurrencyCode;
 };
