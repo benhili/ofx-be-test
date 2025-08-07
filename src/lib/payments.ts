@@ -6,7 +6,7 @@ export const getPayment = async (
 ): Promise<Payment | null> => {
   const result = await DocumentClient.send(
     new GetCommand({
-      TableName: "Payments",
+      TableName: "PaymentsTable",
       Key: { paymentId },
     })
   );
@@ -17,7 +17,23 @@ export const getPayment = async (
 export const listPayments = async (): Promise<Payment[]> => {
   const result = await DocumentClient.send(
     new ScanCommand({
-      TableName: "Payments",
+      TableName: "PaymentsTable",
+    })
+  );
+
+  return (result.Items as Payment[]) || [];
+};
+
+export const listPaymentsByCurrency = async (
+  currency?: CountryCurrencyCode
+): Promise<Payment[]> => {
+  const result = await DocumentClient.send(
+    new ScanCommand({
+      TableName: "PaymentsTable",
+      FilterExpression: "currency = :currency",
+      ExpressionAttributeValues: {
+        ":currency": currency,
+      },
     })
   );
 
@@ -27,12 +43,15 @@ export const listPayments = async (): Promise<Payment[]> => {
 export const createPayment = async (payment: Payment) => {
   await DocumentClient.send(
     new PutCommand({
-      TableName: "Payments",
+      TableName: "PaymentsTable",
       Item: payment,
     })
   );
 };
 
+export const isValidCurrencyCode = (currencyCode: string) => {
+  return Object.values(CountryCurrencyCode).includes(currencyCode);
+};
 // TODO: there's probably a library for this or you could just
 // copy paste the whole currency code list, this is just a stub
 export enum CountryCurrencyCode {
@@ -41,7 +60,7 @@ export enum CountryCurrencyCode {
 }
 
 export type Payment = {
-  id: string;
+  paymentId: string;
   amount: number;
   currency: CountryCurrencyCode;
 };

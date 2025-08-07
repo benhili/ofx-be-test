@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { buildResponse, parseInput } from "./lib/apigateway";
-import { CountryCurrencyCode, createPayment, Payment } from "./lib/payments";
+import { createPayment, isValidCurrencyCode, Payment } from "./lib/payments";
 import { randomUUID } from "crypto";
 
 export const handler = async (
@@ -11,7 +11,7 @@ export const handler = async (
     return buildResponse(400, { message: "Missing amount or currency" });
   }
 
-  if (!Object.values(CountryCurrencyCode).includes(currency)) {
+  if (!isValidCurrencyCode(currency)) {
     return buildResponse(422, {
       message: `Could not find currency code '${currency}'`,
     });
@@ -23,10 +23,10 @@ export const handler = async (
   }
 
   const payment: Payment = {
-    id: randomUUID(),
+    paymentId: randomUUID(),
     amount: amount,
     currency: currency,
   };
   await createPayment(payment);
-  return buildResponse(201, { result: payment.id });
+  return buildResponse(201, { result: payment.paymentId });
 };

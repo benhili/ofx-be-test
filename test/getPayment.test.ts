@@ -2,13 +2,14 @@ import * as payments from "../src/lib/payments";
 import { randomUUID } from "crypto";
 import { handler } from "../src/getPayment";
 import { APIGatewayProxyEvent } from "aws-lambda";
+import { CountryCurrencyCode } from "../src/lib/payments";
 
 describe("When the user requests the records for a specific payment", () => {
   it("Returns the payment matching their input parameter.", async () => {
     const paymentId = randomUUID();
     const mockPayment = {
-      id: paymentId,
-      currency: "AUD",
+      paymentId: paymentId,
+      currency: CountryCurrencyCode.AUD,
       amount: 2000,
     };
     const getPaymentMock = jest
